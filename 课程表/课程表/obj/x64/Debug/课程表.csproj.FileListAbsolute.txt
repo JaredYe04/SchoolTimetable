@@ -1,0 +1,14 @@
+G:\ProgramProjects\课程表\课程表\课程表\obj\x64\Debug\课程表.csproj.AssemblyReference.cache
+G:\ProgramProjects\课程表\课程表\课程表\obj\x64\Debug\课程表.csproj.SuggestedBindingRedirects.cache
+G:\ProgramProjects\课程表\课程表\课程表\obj\x64\Debug\课程表.AboutBox1.resources
+G:\ProgramProjects\课程表\课程表\课程表\obj\x64\Debug\课程表.Form1.resources
+G:\ProgramProjects\课程表\课程表\课程表\obj\x64\Debug\课程表.Form3.resources
+G:\ProgramProjects\课程表\课程表\课程表\obj\x64\Debug\课程表.Properties.Resources.resources
+G:\ProgramProjects\课程表\课程表\课程表\obj\x64\Debug\课程表.Form2.resources
+G:\ProgramProjects\课程表\课程表\课程表\obj\x64\Debug\课程表.csproj.GenerateResource.cache
+G:\ProgramProjects\课程表\课程表\课程表\obj\x64\Debug\课程表.csproj.CoreCompileInputs.cache
+G:\ProgramProjects\课程表\课程表\课程表\bin\x64\Debug\课程表.exe.config
+G:\ProgramProjects\课程表\课程表\课程表\bin\x64\Debug\课程表.exe
+G:\ProgramProjects\课程表\课程表\课程表\bin\x64\Debug\课程表.pdb
+G:\ProgramProjects\课程表\课程表\课程表\obj\x64\Debug\课程表.exe
+G:\ProgramProjects\课程表\课程表\课程表\obj\x64\Debug\课程表.pdb
