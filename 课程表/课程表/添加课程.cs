@@ -21,7 +21,11 @@ namespace 课程表
         {
             if(tName.Text!="")
             {
-                LessonR = new Lesson(listBox1.Text, nID.Value, tName.Text, tTips.Text.Replace('\n', '#'), nH1.Value, nH2.Value, nM1.Value, nM2.Value, dColor.Color);
+                LessonR = new Lesson(
+                    listBox1.Text, nID.Value,
+                    tName.Text, tTips.Text.Replace('\n', '#'),
+                    nH1.Value, nH2.Value, nM1.Value, nM2.Value,
+                    nWeekStart.Value,nWeekEnd.Value, dColor.Color);
                     
                 if (Id < 13)
                 {
@@ -72,115 +76,29 @@ namespace 课程表
             Id = nID.Value;
 
             /////按照作息表修改
-            ///
-            switch(nID.Value)
-            {
-                case 1:
-                    nH1.Value = 8;
-                    nM1.Value = 15;
-                    nH2.Value = 9;
-                    nM2.Value = 0;
-                    break;
-                case 2:
-                    nH1.Value = 9;
-                    nM1.Value = 0;
-                    nH2.Value = 9;
-                    nM2.Value = 45;
-                    break;
-                case 3:
-                    nH1.Value = 10;
-                    nM1.Value = 5;
-                    nH2.Value = 10;
-                    nM2.Value = 50;
-                    break;
-                case 4:
-                    nH1.Value = 10;
-                    nM1.Value = 50;
-                    nH2.Value = 11;
-                    nM2.Value = 35;
-                    break;
-                case 5:
-                    nH1.Value = 13;
-                    nM1.Value = 0;
-                    nH2.Value = 13;
-                    nM2.Value = 45;
-                    break;
-                case 6:
-                    nH1.Value = 13;
-                    nM1.Value = 45;
-                    nH2.Value = 14;
-                    nM2.Value = 30;
-                    break;
-                case 7:
-                    nH1.Value = 14;
-                    nM1.Value = 50;
-                    nH2.Value = 15;
-                    nM2.Value = 35;
-                    break;
-                case 8:
-                    nH1.Value = 15;
-                    nM1.Value = 35;
-                    nH2.Value = 16;
-                    nM2.Value = 20;
-                    break;
-                case 9:
-                    nH1.Value = 16;
-                    nM1.Value = 20;
-                    nH2.Value = 17;
-                    nM2.Value = 5;
-                    break;
-                case 10:
-                    nH1.Value = 18;
-                    nM1.Value = 0;
-                    nH2.Value = 18;
-                    nM2.Value = 45;
-                    break;
-                case 11:
-                    nH1.Value = 18;
-                    nM1.Value = 45;
-                    nH2.Value = 19;
-                    nM2.Value = 30;
-                    break;
-                case 12:
-                    nH1.Value = 19;
-                    nM1.Value = 50;
-                    nH2.Value = 20;
-                    nM2.Value = 35;
-                    break;
-                case 13:
-                    nH1.Value = 20;
-                    nM1.Value = 35;
-                    nH2.Value = 21;
-                    nM2.Value = 20;
-                    break;
+            decimal h1, m1, h2, m2;
+            Autos.AutoTimetable(Id, out h1, out m1, out h2, out m2);
+            nH1.Value= h1;
+            nM1.Value= m1;
+            nH2.Value= h2;
+            nM2.Value= m2;
 
-            }
             if(!ColorChanged)
             {
-                if (Id <= 4)
-                {
-                    tName.ForeColor = System.Drawing.Color.Black;
-                    tTips.ForeColor = System.Drawing.Color.Black;
-                    button2.ForeColor = System.Drawing.Color.Black;
-                    button2.BackColor = System.Drawing.Color.Black;
-                }
-                else if (Id <= 9)
-                {
-                    tName.ForeColor = System.Drawing.Color.Brown;
-                    tTips.ForeColor = System.Drawing.Color.Brown;
-                    button2.ForeColor = System.Drawing.Color.Brown;
-                    button2.BackColor = System.Drawing.Color.Brown;
-                }
-                else
-                {
-                    tName.ForeColor = System.Drawing.Color.DarkBlue;
-                    tTips.ForeColor = System.Drawing.Color.DarkBlue;
-                    button2.ForeColor = System.Drawing.Color.DarkBlue;
-                    button2.BackColor = System.Drawing.Color.DarkBlue;
-                }
+                var ColorGeneral = Autos.AutoColor(Id, tName.Text,false);
+                tName.ForeColor = ColorGeneral;
+                tTips.ForeColor = ColorGeneral;
+                button2.ForeColor = ColorGeneral;
+                button2.BackColor = ColorGeneral;
+
                 dColor.Color = tName.ForeColor;
             }
 
+        }
+
+        private void nWeekEnd_ValueChanged(object sender, EventArgs e)
+        {
+            nWeekStart.Value = nWeekEnd.Value < nWeekStart.Value ? nWeekEnd.Value : nWeekStart.Value;
         }
     }
 }

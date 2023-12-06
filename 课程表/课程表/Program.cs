@@ -19,4 +19,5 @@ namespace 课程表
             Application.Run(new Form1());
         }
     }
+    
 }

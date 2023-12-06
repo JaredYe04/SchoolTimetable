@@ -37,10 +37,10 @@ K:\Programs\课程表\课程表\课程表\obj\x64\Release\课程表.csproj.Resol
 K:\Programs\课程表\课程表\课程表\obj\x64\Release\课程表.AboutBox1.resources
 K:\Programs\课程表\课程表\课程表\obj\x64\Release\课程表.AdjustDate.resources
 K:\Programs\课程表\课程表\课程表\obj\x64\Release\课程表.Form1.resources
-K:\Programs\课程表\课程表\课程表\obj\x64\Release\课程表.Form3.resources
 K:\Programs\课程表\课程表\课程表\obj\x64\Release\课程表.Properties.Resources.resources
 K:\Programs\课程表\课程表\课程表\obj\x64\Release\课程表.Form2.resources
 K:\Programs\课程表\课程表\课程表\obj\x64\Release\课程表.csproj.GenerateResource.cache
 K:\Programs\课程表\课程表\课程表\obj\x64\Release\课程表.csproj.CoreCompileInputs.cache
 K:\Programs\课程表\课程表\课程表\obj\x64\Release\课程表.exe
 K:\Programs\课程表\课程表\课程表\obj\x64\Release\课程表.pdb
+K:\Programs\课程表\课程表\课程表\obj\x64\Release\课程表.编辑课程.resources

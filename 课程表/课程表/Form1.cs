@@ -13,7 +13,7 @@ namespace 课程表
             InitializeComponent();
         }
 
-        string DefaultFile = "C:\\ProgramData\\课程表.txt";
+        
 
         public static Time GetTime(int Id)
         {
@@ -107,33 +107,10 @@ namespace 课程表
         }
         void AutoSaveFile()
         {
-            String Content = "";
-            Content += Convert.ToString(DateOffset) + Environment.NewLine;
-            for (int i = 0; i < Amount; i++)
-            {
-                Content += Lessons[i].Name;
-                Content += "|";
-                Content += Lessons[i].Weekday;
-                Content += "|";
-                Content += Lessons[i].Tips;
-                Content += "|";
-                Content += Lessons[i].Color.ToArgb();
-                Content += "|";
-                Content += Lessons[i].id;
-                Content += "|";
-                Content += Convert.ToString(Lessons[i].h1) + "$";
-                Content += Convert.ToString(Lessons[i].m1) + "$";
-                Content += Convert.ToString(Lessons[i].h2) + "$";
-                Content += Convert.ToString(Lessons[i].m2);
-                Content += Environment.NewLine;
-            }
-            StreamWriter streamWriter = new StreamWriter(DefaultFile);
-            streamWriter.WriteLine(Content);
-            streamWriter.Close();
+
+            Autos.SaveFile(Autos.DefaultFile, Lessons, Amount);
         }
 
-
-        int DateOffset = 0;
         String ConvertNumWeek(int Num)
         {
             switch (Num)
@@ -141,7 +118,7 @@ namespace 课程表
                 case 0:
                     GregorianCalendar gregorianCalendar = new GregorianCalendar();
                     //获取指定日期是周数 CalendarWeekRule指定 第一周开始于该年的第一天，DayOfWeek指定每周第一天是星期几　
-                    int weekOfYear = gregorianCalendar.GetWeekOfYear(DateTime.Now, CalendarWeekRule.FirstDay, DayOfWeek.Monday)+DateOffset;
+                    int weekOfYear = gregorianCalendar.GetWeekOfYear(DateTime.Now, CalendarWeekRule.FirstDay, DayOfWeek.Monday)+Autos.DateOffset;
                     string end = DateTime.Now.AddDays(7-(int)DateTime.Now.DayOfWeek).ToShortDateString();
                     return "第"+weekOfYear+"周\n到"+end;
                 case 1:
@@ -188,6 +165,7 @@ namespace 课程表
 
         int TitleFontSize = 17;
         int LessonFontSize=17;
+        int DisplayLength = 12;
         public void Render()
         {
             int YScale;
@@ -195,6 +173,9 @@ namespace 课程表
             XScale =pImage.Width/8;
             YScale =pImage.Height/14;
             TitleFontSize = 9+(int)(XScale / 12);
+
+            string GlobalFont = "微软雅黑";
+
 
             LessonFontSize =9+(int)(TitleFontSize/2);
             if(pImage.Height!=0)//////Win+D显示桌面时，控件会出现高度为0的BUG
@@ -223,8 +204,16 @@ namespace 课程表
                         g.DrawLine(curPen, 0, pImage.Height - 1, pImage.Width, pImage.Height - 1);
                     }
                     if(i<=13)g.DrawLine(curPen, 0, y, pImage.Width, y);
-                    if (i != 0&& i<=13)
-                        g.DrawString("第" + Convert.ToString(i) + "节", new Font("微软雅黑", TitleFontSize, FontStyle.Bold), Brushes.Black, new Point(2, y + Yoffset));
+                    if (i != 0&& i <= 13)
+                    {
+                        string str = "第" + Convert.ToString(i) + "节";
+                        decimal h1,m1,h2,m2;
+                        Autos.AutoTimetable(i, out h1, out m1, out h2, out m2);
+                        str += Environment.NewLine;
+                        str += h1.ToString() + ":" + m1.ToString() + " - " + h2.ToString() + ":" + m2.ToString();
+                        g.DrawString(str, new Font(GlobalFont, TitleFontSize*3/5, FontStyle.Regular), Brushes.Black, new Point(2, y + Yoffset));
+                    }
+                        
                     i++;
 
                 }
@@ -236,17 +225,17 @@ namespace 课程表
                     if(o==0)
                     {
                         //g.DrawLine(curPen, pImage.Width - 1, 0, pImage.Width - 1, pImage.Height);
-                        g.DrawString(ConvertNumWeek(o), new Font("微软雅黑", TitleFontSize*2/3 - 3, FontStyle.Bold), Brushes.Black, new Point(Xoffset + x, 10));
+                        g.DrawString(ConvertNumWeek(o), new Font(GlobalFont, TitleFontSize*2/3 - 3, FontStyle.Regular), Brushes.Black, new Point(Xoffset + x, 10));
                     }
                     else if (pImage.Width - x < 40)
                     {
                         g.DrawLine(curPen, pImage.Width - 1, 0, pImage.Width - 1, pImage.Height);
-                        g.DrawString(ConvertNumWeek(o), new Font("微软雅黑", TitleFontSize - 5, FontStyle.Bold), Brushes.Black, new Point(Xoffset + x, 20));
+                        g.DrawString(ConvertNumWeek(o), new Font(GlobalFont, TitleFontSize - 5, FontStyle.Regular), Brushes.Black, new Point(Xoffset + x, 20));
                     }
                     else
                     {
                         g.DrawLine(curPen, x, 0, x, pImage.Height);
-                        g.DrawString(ConvertNumWeek(o), new Font("微软雅黑", TitleFontSize - 5, FontStyle.Bold), Brushes.Black, new Point(Xoffset + x, 20));
+                        g.DrawString(ConvertNumWeek(o), new Font(GlobalFont, TitleFontSize - 5, FontStyle.Regular), Brushes.Black, new Point(Xoffset + x, 20));
                     }
                     if(o==7)
                     {
@@ -257,8 +246,17 @@ namespace 课程表
  //               MessageBox.Show("DrawLinesModule2OK");
                 Point Position = new Point();
 
+
+
+                GregorianCalendar gregorianCalendar = new GregorianCalendar();
+                int weekOfYear = gregorianCalendar.GetWeekOfYear(DateTime.Now, CalendarWeekRule.FirstDay, DayOfWeek.Monday) + Autos.DateOffset;
                 for (int j = 0; j < 91; j++)
                 {
+                    ///跳过不在范围内的课程
+
+                    if (weekOfYear > Lessons[j].weekE || weekOfYear < Lessons[j].weekS) continue;
+                    ///
+
                     if (Lessons[j].Using)
                     {
                         Position.X = Xoffset + (ConvertWeekNum(Lessons[j].Weekday)) * XScale;
@@ -282,7 +280,14 @@ namespace 课程表
                         {
                             TitleSize = TitleSize * 8 / 10;
                         }
-                        g.DrawString(Lessons[j].Name + "\r\n", new Font("微软雅黑",TitleSize, FontStyle.Bold), new SolidBrush(Lessons[j].Color)
+
+
+
+                        
+                        g.DrawString(Lessons[j].Name.Length <= DisplayLength ? Lessons[j].Name : (Lessons[j].Name.Substring(0, DisplayLength) +"...")
+                            
+                            + "\r\n",
+                            new Font(GlobalFont,TitleSize, FontStyle.Bold), new SolidBrush(Lessons[j].Color)
                             , Position);
                         Position.Y += TitleSize *7/5;
 
@@ -293,7 +298,7 @@ namespace 课程表
                         Convert.ToString(Lessons[j].h2) + ":";
                         if (Lessons[j].m2 == 0) Content += "0";
                         Content += Convert.ToString(Lessons[j].m2) + "\r\n";
-                        g.DrawString(Content, new Font("微软雅黑", (int)(LessonFontSize * 0.4), FontStyle.Bold), new SolidBrush(Lessons[j].Color), Position);
+                        g.DrawString(Content, new Font(GlobalFont, (int)(LessonFontSize * 0.4), FontStyle.Bold), new SolidBrush(Lessons[j].Color), Position);
                         Position.Y += LessonFontSize * 2 / 3;
 
                         String Tips = Lessons[j].Tips;
@@ -307,7 +312,7 @@ namespace 课程表
                         //    }
                         //}
                         Tips=Tips.Replace('#', '\n');
-                        g.DrawString(Tips, new Font("微软雅黑", (int)(LessonFontSize * 0.4), FontStyle.Underline), new SolidBrush(Lessons[j].Color), Position);
+                        g.DrawString(Tips, new Font(GlobalFont, (int)(LessonFontSize * 0.4), FontStyle.Underline), new SolidBrush(Lessons[j].Color), Position);
 
                     }
 
@@ -317,54 +322,6 @@ namespace 课程表
             }
 
         }
-        void AutoImportFile()
-        {
-            try
-            {
-                Lesson[] ReadLessons = new Lesson[150];
-                for (int i = 0; i < ReadLessons.Length; i++)
-                {
-                    ReadLessons[i] = new Lesson();
-                }
-                StreamReader streamReader = new StreamReader(DefaultFile);
-                string Line;
-                Line = streamReader.ReadLine();
-                if (Line != null) DateOffset = Convert.ToInt32(Line);
-                // 从文件读取并显示行，直到文件的末尾 
-                int Num = 0;
-                while ((Line = streamReader.ReadLine()) != null)
-                {
-                    if (Line.Length > 5)//防止空行
-                    {
-                        String[] Array = Line.Split('|');
-                        ReadLessons[Num].Name = Array[0];
-                        ReadLessons[Num].Weekday = Array[1];
-                        ReadLessons[Num].Tips = Array[2];
-                        ReadLessons[Num].Color = Color.FromArgb(Convert.ToInt32(Array[3]));
-                        ReadLessons[Num].id = Convert.ToDecimal(Array[4]);
-                        String[] Time = Array[5].Split('$');
-                        ReadLessons[Num].h1 = Convert.ToInt32(Time[0]);
-                        ReadLessons[Num].m1 = Convert.ToInt32(Time[1]);
-                        ReadLessons[Num].h2 = Convert.ToInt32(Time[2]);
-                        ReadLessons[Num].m2 = Convert.ToInt32(Time[3]);
-                        ReadLessons[Num].Using = true;
-                        Num++;
-                        Amount++;
-
-                    }
-
-                }
-                for (int i = 0; i < 91; i++)
-                {
-                    Lessons[i] = ReadLessons[i];
-
-                }
-                streamReader.Close();
-                streamReader.Dispose();
-            }
-            finally { }
-
-        }
 
 
 
@@ -372,9 +329,9 @@ namespace 课程表
         private void Form1_Load(object sender, EventArgs e)
         {
             //this.Text = "课程表";
-            if (!File.Exists(DefaultFile))
+            if (!File.Exists(Autos.DefaultFile))
             {
-                StreamWriter CreateFile = new StreamWriter(DefaultFile);
+                StreamWriter CreateFile = new StreamWriter(Autos.DefaultFile);
                 CreateFile.Close();
                 CreateFile.Dispose();
             }
@@ -388,7 +345,9 @@ namespace 课程表
             {
                 Lessons[i] = new Lesson();
             }
-            AutoImportFile();
+
+            Autos.AutoImportFile(Lessons,out Amount);
+
             Render();
             ///以绘图形式呈现
         }
@@ -446,8 +405,8 @@ namespace 课程表
 
         private void button2_Click(object sender, EventArgs e)
         {
-            Form3 form3 = new Form3(Lessons);
-            form3.DateOffset = DateOffset;
+            编辑课程 form3 = new 编辑课程(Lessons);
+            form3.DateOffset = Autos.DateOffset;
             form3.ShowDialog();
             if (form3.Save)
             {
@@ -458,7 +417,7 @@ namespace 课程表
                     Lessons[i] = form3.LessonList[i];
                     if (Lessons[i].Using) Amount++;
                 }
-                DateOffset = form3.DateOffset;
+                Autos.DateOffset = form3.DateOffset;
                 Render();
             }
         }

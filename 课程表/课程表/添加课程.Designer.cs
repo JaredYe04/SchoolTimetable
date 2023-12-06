@@ -47,11 +47,17 @@
             this.dColor = new System.Windows.Forms.ColorDialog();
             this.button2 = new System.Windows.Forms.Button();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.nWeekEnd = new System.Windows.Forms.NumericUpDown();
+            this.nWeekStart = new System.Windows.Forms.NumericUpDown();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.nH1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nH2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nM1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nM2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nID)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nWeekEnd)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nWeekStart)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -101,7 +107,7 @@
             this.tTips.Multiline = true;
             this.tTips.Name = "tTips";
             this.tTips.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.tTips.Size = new System.Drawing.Size(230, 99);
+            this.tTips.Size = new System.Drawing.Size(230, 71);
             this.tTips.TabIndex = 4;
             // 
             // label4
@@ -299,12 +305,88 @@
             this.checkBox1.Text = "连课";
             this.checkBox1.UseVisualStyleBackColor = true;
             // 
+            // nWeekEnd
+            // 
+            this.nWeekEnd.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.nWeekEnd.Location = new System.Drawing.Point(268, 286);
+            this.nWeekEnd.Maximum = new decimal(new int[] {
+            20,
+            0,
+            0,
+            0});
+            this.nWeekEnd.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nWeekEnd.Name = "nWeekEnd";
+            this.nWeekEnd.Size = new System.Drawing.Size(36, 26);
+            this.nWeekEnd.TabIndex = 22;
+            this.nWeekEnd.Value = new decimal(new int[] {
+            16,
+            0,
+            0,
+            0});
+            this.nWeekEnd.ValueChanged += new System.EventHandler(this.nWeekEnd_ValueChanged);
+            // 
+            // nWeekStart
+            // 
+            this.nWeekStart.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.nWeekStart.Increment = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.nWeekStart.Location = new System.Drawing.Point(167, 286);
+            this.nWeekStart.Maximum = new decimal(new int[] {
+            20,
+            0,
+            0,
+            0});
+            this.nWeekStart.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nWeekStart.Name = "nWeekStart";
+            this.nWeekStart.Size = new System.Drawing.Size(44, 26);
+            this.nWeekStart.TabIndex = 23;
+            this.nWeekStart.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("微软雅黑", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label7.Location = new System.Drawing.Point(227, 284);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(21, 28);
+            this.label7.TabIndex = 21;
+            this.label7.Text = "-";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label9.Location = new System.Drawing.Point(98, 287);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(69, 25);
+            this.label9.TabIndex = 24;
+            this.label9.Text = "周次：";
+            // 
             // Form2
             // 
             this.AcceptButton = this.button1;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(344, 396);
+            this.Controls.Add(this.label9);
+            this.Controls.Add(this.nWeekEnd);
+            this.Controls.Add(this.nWeekStart);
+            this.Controls.Add(this.label7);
             this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.nH2);
@@ -334,6 +416,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.nM1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nM2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nID)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nWeekEnd)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nWeekStart)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -365,5 +449,9 @@
         public int WeekdayIndex;
         public decimal h, m;
         public System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.NumericUpDown nWeekEnd;
+        private System.Windows.Forms.NumericUpDown nWeekStart;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label9;
     }
 }
